@@ -3,23 +3,28 @@ package grpc
 import (
 	"log"
 	"net"
+	"sync"
 
 	pb "github.com/drhelius/grpc-demo-user/internal/grpc/user"
-	"github.com/drhelius/grpc-demo-user/internal/impl/user"
+	"github.com/drhelius/grpc-demo-user/internal/impl"
 	"google.golang.org/grpc"
 )
 
-const (
-	port = ":50051"
-)
+func Serve(wg *sync.WaitGroup, port string) {
+	defer wg.Done()
 
-func Serve() {
-	lis, err := net.Listen("tcp", port)
+	lis, err := net.Listen("tcp", ":"+port)
+
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+
 	s := grpc.NewServer()
-	pb.RegisterUserServiceServer(s, &server{})
+
+	pb.RegisterUserServiceServer(s, &impl.Server{})
+
+	log.Printf("Serving GRPC on localhost:%s ...", port)
+
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

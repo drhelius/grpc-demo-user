@@ -1,12 +1,20 @@
 package main
 
 import (
-	"context"
-	"log"
+	"sync"
 
-	pb "github.com/drhelius/grpc-demo-user/server/grpc"
+	"github.com/drhelius/grpc-demo-user/internal/server/grpc"
+	"github.com/drhelius/grpc-demo-user/internal/server/http"
 )
 
 func main() {
-	grpc.Serve()
+	var wg sync.WaitGroup
+
+	wg.Add(1)
+	go grpc.Serve(&wg, "5000")
+
+	wg.Add(1)
+	go http.Serve(&wg, "5000", "8080")
+
+	wg.Wait()
 }
