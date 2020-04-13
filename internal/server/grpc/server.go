@@ -5,7 +5,7 @@ import (
 	"net"
 	"sync"
 
-	pb "github.com/drhelius/grpc-demo-user/internal/grpc/user"
+	pb "github.com/drhelius/grpc-demo-proto/user"
 	"github.com/drhelius/grpc-demo-user/internal/impl"
 	"google.golang.org/grpc"
 )
