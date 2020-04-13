@@ -4,7 +4,7 @@ CMD_MAIN_PATH=cmd/grpc-demo-user/main.go
 CMD_BINARY_PATH=$(BINARY_PATH)/grpc-demo-user
 CMD_SERVER_PORT=5000
 
-PROTO_FILES_PATH=$(GOPATH)/src/github.com/drhelius/grpc-demo-proto
+PROTO_FILES_PATH=../grpc-demo-proto
 PROTO_FILE=user/user.proto
 
 GOOGLE_APIS=$(GOPATH)/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis
