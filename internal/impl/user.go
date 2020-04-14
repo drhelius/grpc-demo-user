@@ -3,7 +3,9 @@ package impl
 import (
 	"context"
 	"log"
+	"strconv"
 
+	"github.com/Pallinder/go-randomdata"
 	"github.com/drhelius/grpc-demo-proto/user"
 )
 
@@ -13,14 +15,22 @@ type Server struct {
 
 func (s *Server) Create(ctx context.Context, in *user.CreateUserReq) (*user.CreateUserResp, error) {
 
-	log.Printf("[User] Received: %s", in.GetUser())
+	log.Printf("[User] Create Req: %v", in.GetUser())
 
-	return &user.CreateUserResp{Id: "testid"}, nil
+	r := &user.CreateUserResp{Id: strconv.Itoa(randomdata.Number(1000000))}
+
+	log.Printf("[User] Create Res: %v", r.GetId())
+
+	return r, nil
 }
 
 func (s *Server) Read(ctx context.Context, in *user.ReadUserReq) (*user.ReadUserResp, error) {
 
-	log.Printf("[User] Received: %v", in.GetId())
+	log.Printf("[User] Read Req: %v", in.GetId())
 
-	return &user.ReadUserResp{User: &user.User{Id: "demoid", Name: "demoname", Email: "demoemail"}}, nil
+	r := &user.ReadUserResp{User: &user.User{Id: in.GetId(), Name: randomdata.FullName(randomdata.RandomGender), Email: randomdata.Email()}}
+
+	log.Printf("[User] Read Res: %v", r.GetUser())
+
+	return r, nil
 }
