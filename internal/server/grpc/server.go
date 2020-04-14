@@ -16,16 +16,16 @@ func Serve(wg *sync.WaitGroup, port string) {
 	lis, err := net.Listen("tcp", ":"+port)
 
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		log.Fatalf("[User] GRPC failed to listen: %v", err)
 	}
 
 	s := grpc.NewServer()
 
 	user.RegisterUserServiceServer(s, &impl.Server{})
 
-	log.Printf("Serving GRPC on localhost:%s ...", port)
+	log.Printf("[User] Serving GRPC on localhost:%s ...", port)
 
 	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+		log.Fatalf("[User] GRPC failed to serve: %v", err)
 	}
 }
