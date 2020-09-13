@@ -28,7 +28,7 @@ func (s *Server) Read(ctx context.Context, in *user.ReadUserReq) (*user.ReadUser
 
 	log.Printf("[User] Read Req: %v", in.GetId())
 
-	r := &user.ReadUserResp{User: &user.User{Id: in.GetId(), Name: randomdata.FullName(randomdata.Female), Email: randomdata.Email()}}
+	r := &user.ReadUserResp{User: &user.User{Id: in.GetId(), Name: randomdata.FullName(randomdata.RandomGender), Email: randomdata.Email()}}
 
 	log.Printf("[User] Read Res: %v", r.GetUser())
 
