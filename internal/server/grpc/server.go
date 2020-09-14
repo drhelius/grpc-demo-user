@@ -7,6 +7,9 @@ import (
 
 	"github.com/drhelius/grpc-demo-proto/user"
 	"github.com/drhelius/grpc-demo-user/internal/impl"
+	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	grpc_opentracing "github.com/grpc-ecosystem/go-grpc-middleware/tracing/opentracing"
+	"github.com/opentracing/opentracing-go"
 	"google.golang.org/grpc"
 )
 
@@ -19,7 +22,9 @@ func Serve(wg *sync.WaitGroup, port string) {
 		log.Fatalf("[User] GRPC failed to listen: %v", err)
 	}
 
-	s := grpc.NewServer()
+	s := grpc.NewServer(grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
+		grpc_opentracing.UnaryServerInterceptor(grpc_opentracing.WithTracer(opentracing.GlobalTracer())),
+	)))
 
 	user.RegisterUserServiceServer(s, &impl.Server{})
 
